@@ -2,7 +2,7 @@ const express = require('express')
 const languages = express.Router()
 const Language = require('../models/language.js')
 
-module.exports = languages
+
 
 // Seed:
 languages.get('/seed', (req, res) => {
@@ -57,3 +57,14 @@ languages.get('/:name', (req, res) => {
             res.json(foundLanguage)
         })
 })
+
+languages.get('/random', async (req, res) => {
+    console.log('!!!!!')
+    const count = await Language.countDocuments(); //count the number of languages in the collection
+    const randomIndex = Math.floor(Math.random() * count) //get a random index between 0 and count
+    const language = await Language.findOne().skip(randomIndex) //find one language by skipping the random index
+    res.json(language)
+})
+
+
+module.exports = languages
